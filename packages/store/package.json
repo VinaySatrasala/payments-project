@@ -1,5 +1,5 @@
 {
-  "name": "store",
+  "name": "@repo/store",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -16,3 +16,4 @@
     "./useBalance" : "./src/hooks/useBalance.ts"
   }
 }
+
