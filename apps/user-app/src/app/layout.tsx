@@ -3,6 +3,8 @@ import "@repo/ui/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./provider";
+import { SessionProvider } from "next-auth/react";
+import AppBarClient  from "./AppBarClient";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +20,12 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-    <Providers>
-      <body className={inter.className}>{children}</body>
-    </Providers>
+        <Providers>
+            <body className={inter.className}>
+              <AppBarClient/>
+              {children}
+            </body>
+        </Providers>
     </html>
   );
 }

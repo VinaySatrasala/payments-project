@@ -1,4 +1,4 @@
-import {db} from "@repo/db/client";
+import prisma from "@repo/db/client";
 import CredentialsProvider,{CredentialsConfig} from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
 import z from "zod"
@@ -7,7 +7,7 @@ import { AuthOptions } from "next-auth";
 
 const CredentialsSchema = z.object({
     phone: z.string().min(10).max(15),
-    password: z.string().min(6),
+    password: z.string(),
 });
 
 export const authOptions : AuthOptions = {
@@ -26,7 +26,7 @@ export const authOptions : AuthOptions = {
                 throw new Error("Invalid credentials format")
             }
             const hashedPassword = await bcrypt.hash(credentials.password, 10);
-            const existingUser = await db.user.findFirst({
+            const existingUser = await prisma.user.findFirst({
                 where: {
                     number: credentials.phone
                 }
@@ -46,7 +46,7 @@ export const authOptions : AuthOptions = {
 
             try {
                 console.log("Reached")
-                const user = await db.user.create({
+                const user = await prisma.user.create({
                     data: {
                         number: credentials.phone,
                         password: hashedPassword
