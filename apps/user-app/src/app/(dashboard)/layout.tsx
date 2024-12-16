@@ -1,6 +1,6 @@
 "use client"
-import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import { SidebarItem } from "../../components/SideBarItem";
 
 export default function Layout({
     children,
@@ -9,12 +9,12 @@ export default function Layout({
   }): JSX.Element {
     return (
       <div className="flex">
-          <div className="w-72 border-r border-slate-300 min-h-screen mr-4 pt-28">
-              <div>
+          <div className="w-72 border-r border-slate-300 min-h-screen pt-8">
+              <div className="p-8">
                   <SidebarItem href={"/dashboard"} icon={<HomeIcon />} title="Home" />
                   <SidebarItem href={"/transfer"} icon={<TransferIcon />} title="Transfer" />
                   <SidebarItem href={"/transactions"} icon={<TransactionsIcon />} title="Transactions" />
-                  <SidebarItem href={"/P2Ptransfer"} title={"P2P Transfer"} icon={<P2PIcon/>} ></SidebarItem>
+                  <SidebarItem href={"/P2Ptransfer"} title={"P2P Transfer"} icon={<P2PIcon/>} />
               </div>
           </div>
               {children}
@@ -22,26 +22,9 @@ export default function Layout({
     );
   }
 
-// Sidebar Item Component
-export const SidebarItem = ({ href, title, icon }: { href: string; title: string; icon: React.ReactNode }) => {
-    const router = useRouter();
-    const pathname = usePathname();
-    const selected = pathname === href;
 
-    return (
-        <div
-            className={`flex items-center ${selected ? "text-[#6a51a6]" : "text-slate-500"} 
-                cursor-pointer p-2 pl-8`}
-            onClick={() => router.push(href)}
-        >
-            <div className="pr-2">{icon}</div>
-            <div className={`font-bold ${selected ? "text-[#6a51a6]" : "text-slate-500"}`}>{title}</div>
-        </div>
-    );
-};
 
-// Icons Fetched from https://heroicons.com/
-function HomeIcon() {
+function HomeIcon() : JSX.Element {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -60,6 +43,7 @@ function HomeIcon() {
         </svg>
     );
 }
+
 
 function TransferIcon() {
     return (

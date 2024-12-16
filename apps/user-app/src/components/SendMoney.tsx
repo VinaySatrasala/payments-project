@@ -4,7 +4,7 @@ import { Card } from "@repo/ui/card";
 import { TextInput } from "@repo/ui/TextInput";
 import { Center } from "@repo/ui/Center"
 import { useState } from "react";
-import P2P from "../app/lib/actions/P2PTranfer";
+import {P2P} from "../app/lib/actions/P2PTranfer";
 
 export default function SendMoney() {
     const [number, setNumber] = useState("");

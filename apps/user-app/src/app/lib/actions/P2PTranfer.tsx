@@ -2,7 +2,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 import prisma from "@repo/db/client";
-export default async function P2P(to : string, amount : number){
+export async function P2P(to : string, amount : number){
     const session = await getServerSession(authOptions);
     // @ts-ignore
     const from =  session?.user?.id;

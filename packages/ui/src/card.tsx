@@ -1,20 +1,21 @@
-import React from "react";
+import React from 'react'
 
-export function Card({
-  title,
-  children,
-}: {
-  title: string;
-  children?: React.ReactNode;
-}): JSX.Element {
+interface CardProps {
+  children: React.ReactNode
+  className?: string
+}
+
+export function Card({ children, className = '' }: CardProps) {
   return (
-    <div
-      className="border p-6 bg-white rounded-xl bg-[#ededed]"
+    <div 
+      className={`
+        rounded-lg border border-neutral-800 bg-neutral-900 p-6
+        transition-all hover:border-neutral-700 hover:bg-neutral-900/80
+        ${className}
+      `}
     >
-      <h1 className="text-xl border-b pb-2">
-        {title}
-      </h1>
       {children}
     </div>
-  );
+  )
 }
+
