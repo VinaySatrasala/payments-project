@@ -16,7 +16,9 @@
     "./TextInput" : "./src/TextInput.tsx",
     "./Button" : "./src/Button.tsx",
     "./Input" : "./src/Input.tsx",
-    "./Label" : "./src/Label.tsx"
+    "./Label" : "./src/Label.tsx",
+    "./CardTable" : "./src/CardTable.tsx",
+    "./Table" : "./src/Table.tsx"
   },
   "license": "MIT",
   "scripts": {
