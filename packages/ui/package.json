@@ -14,7 +14,9 @@
     "./Select" : "./src/Select.tsx",
     "./Center" : "./src/Center.tsx",
     "./TextInput" : "./src/TextInput.tsx",
-    "./Button" : "./src/Button.tsx"
+    "./Button" : "./src/Button.tsx",
+    "./Input" : "./src/Input.tsx",
+    "./Label" : "./src/Label.tsx"
   },
   "license": "MIT",
   "scripts": {
