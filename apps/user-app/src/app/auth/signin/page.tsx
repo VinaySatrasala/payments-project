@@ -3,7 +3,7 @@ import { Card } from "@repo/ui/card"
 import { Input } from "@repo/ui/Input"
 import { Label } from "@repo/ui/Label"
 import { Button } from '@repo/ui/Button'
-import {signIn} from "next-auth" 
+import {signIn} from "next-auth/react" 
 import { useState } from "react"
 export default function SignIn() {
   const [number,setNumber] = useState(0);
@@ -28,6 +28,9 @@ export default function SignIn() {
                 required
                 className="mt-1"
                 placeholder="Phone number"
+                onchange={(e)=>{
+                  setNumber(Number(e.target.value))
+                }}
               />
             </div>
             <div>
@@ -42,6 +45,9 @@ export default function SignIn() {
                 required
                 className="mt-1"
                 placeholder="Password"
+                onchange={(e)=>{
+                  setPassword(e.target.value)
+                }}
               />
             </div>
           </div>

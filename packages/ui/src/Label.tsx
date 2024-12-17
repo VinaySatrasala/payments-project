@@ -1,14 +1,19 @@
-"use client"
+"use client";
 
+import React from "react";
 
-const Label = ({children}:{children:React.ReactNode}) => {
-  return(
+interface LabelProps {
+  children: React.ReactNode;
+}
+
+const Label: React.FC<LabelProps> = ({ children }) => {
+  return (
     <label className="text-sm font-medium leading-none text-neutral-300">
       {children}
     </label>
-  )
-}
+  );
+};
 
+Label.displayName = "Label";
 
-export { Label }
-
+export { Label };
