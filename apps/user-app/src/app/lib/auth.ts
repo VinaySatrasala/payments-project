@@ -73,6 +73,9 @@ export const authOptions : AuthOptions = {
             session.user.id = token.sub
             return session
         }
+    },
+    pages:{
+        "signIn" : '/auth/signin'    
     }
   }
  
