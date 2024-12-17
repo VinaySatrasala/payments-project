@@ -6,7 +6,8 @@
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "clean": "turbo clean",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "db:generate" : "cd packages/db && prisma generate && cd ../.."
   },
   "devDependencies": {
     "prettier": "^3.2.5",
