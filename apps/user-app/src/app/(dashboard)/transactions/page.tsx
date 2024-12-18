@@ -30,6 +30,7 @@ export default async function P2PTransactionsPage(){
 
     return (
         <div className="w-full">
+            {JSON.stringify(transactions)}
             <UserTransactions transactions={transactions} />
         </div>
     );

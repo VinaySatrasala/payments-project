@@ -33,10 +33,10 @@ export default function SignIn() {
     const result = await signIn("credentials", {
       phone: number,
       password: password,
-      redirect: true,
+      redirect: false,
       callbackUrl: "/dashboard",
     });
-
+    console.log(result)
     if (result?.error) {
       setError("Invalid credentials. Please try again."); // Set error if login fails
     }
