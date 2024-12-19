@@ -5,6 +5,7 @@ import { authOptions } from "../auth"
 
 export async function createOnRampTransaction( provider: string, amount: number) {
     const session = await getServerSession(authOptions);
+    console.log(amount)
     // @ts-ignore
     if(!session?.user || !session.user?.id){
         return {

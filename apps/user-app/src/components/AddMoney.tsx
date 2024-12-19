@@ -32,7 +32,7 @@ export const AddMoney = () => {
                     placeholder="Enter Amount" 
                     onchange={(e:any) => {
                     console.log(e.target.value)
-                    setValue(Number(value))
+                    setValue(Number(e.target.value))
                 }}></Input>
                 <div className="py-4 text-left pt-4 pb-2">
                     Bank
@@ -46,8 +46,10 @@ export const AddMoney = () => {
                 }))} />
                 <div className="flex justify-center pt-4">
                     <Button onClick={async () => {
+                        console.log(value)
+                        
                         await createOnRampTransaction(provider, value)
-                        window.location.href = redirectUrl || "";
+                        // window.location.href = redirectUrl || "";
                     }} className="w-1/2 py-2 px-4 text-black">
                         Add Money
                     </Button>
