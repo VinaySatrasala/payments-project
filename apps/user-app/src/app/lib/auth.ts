@@ -25,11 +25,11 @@ export const authOptions: AuthOptions = {
 
         const hashedPassword = await bcrypt.hash(credentials.password, 10);
         const existingUser = await prisma.user.findFirst({
-          where: { number: "1111111111" },
+          where: { number: credentials.phone },
         });
 
         if (existingUser) {
-          const passwordValidation = await bcrypt.compare("alice", existingUser.password);
+          const passwordValidation = await bcrypt.compare(credentials.password, existingUser.password);
           if (passwordValidation) {
             return {
               id: existingUser.id.toString(),

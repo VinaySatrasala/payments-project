@@ -8,7 +8,7 @@ interface LabelProps {
 
 const Label: React.FC<LabelProps> = ({ children }) => {
   return (
-    <label className="text-sm font-medium leading-none text-neutral-300">
+    <label className="text-sm font-medium leading-none text-neutral-300 ">
       {children}
     </label>
   );

@@ -18,7 +18,8 @@
     "./Input" : "./src/Input.tsx",
     "./Label" : "./src/Label.tsx",
     "./CardTable" : "./src/CardTable.tsx",
-    "./Table" : "./src/Table.tsx"
+    "./Table" : "./src/Table.tsx",
+    "./P2P" : "./src/P2P.tsx"
   },
   "license": "MIT",
   "scripts": {

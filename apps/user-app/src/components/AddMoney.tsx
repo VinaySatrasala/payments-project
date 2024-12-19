@@ -28,8 +28,10 @@ export const AddMoney = () => {
         <CardContent>
             <div className="w-full">
                 <Label>Amount</Label>
-                <Input onchange={(value) => {
-                    console.log(value)
+                <Input
+                    placeholder="Enter Amount" 
+                    onchange={(e:any) => {
+                    console.log(e.target.value)
                     setValue(Number(value))
                 }}></Input>
                 <div className="py-4 text-left pt-4 pb-2">

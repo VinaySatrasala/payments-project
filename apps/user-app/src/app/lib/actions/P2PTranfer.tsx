@@ -68,4 +68,8 @@ export async function P2P(to : string, amount : number){
             }
         })
     })
+
+    return {
+        "message" : "Transaction Succesful..!"
+    }
 }

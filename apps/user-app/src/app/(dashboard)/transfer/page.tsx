@@ -22,6 +22,7 @@ async function getOnRampTransactions(userId: number) {
         where: { userId },
     });
     return txns.map((t) => ({
+        id : t.id,
         time: t.startTime,
         amount: t.amount,
         status: t.status,
@@ -34,6 +35,7 @@ export default async function TransferPage() {
     const session = await getServerSession(authOptions);
 
     // If the user is not authenticated, return a redirect or show an error
+    // @ts-ignore
     if (!session?.user?.id) {   
         return (
             <div>
@@ -41,7 +43,7 @@ export default async function TransferPage() {
             </div>
         );
     }
-
+    // @ts-ignore
     const userId = Number(session.user.id);
 
     // Fetch balance and transactions data
@@ -49,6 +51,7 @@ export default async function TransferPage() {
     const transactions = await getOnRampTransactions(userId);
 
     return (
+
         <div className="w-screen">
             <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
                 Transfer

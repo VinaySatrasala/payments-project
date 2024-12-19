@@ -3,7 +3,9 @@ import React from 'react'
 type CardProps = React.HTMLAttributes<HTMLDivElement>
 
 export function Card({ className, ...props }: CardProps): React.ReactElement {
-  return <div className={`rounded-lg border bg-card text-card-foreground shadow-sm ${className}`} {...props} />
+  return <div className={`
+    rounded-lg border border-neutral-800 bg-neutral-900 p-6 transition-all hover:border-neutral-700 hover:bg-neutral-900/80
+    ${className}`} {...props} />
 }
 
 export function CardHeader({ className, ...props }: CardProps): React.ReactElement {

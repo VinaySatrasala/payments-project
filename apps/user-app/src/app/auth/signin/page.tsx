@@ -33,7 +33,7 @@ export default function SignIn() {
     const result = await signIn("credentials", {
       phone: number,
       password: password,
-      redirect: false,
+      redirect: true,
       callbackUrl: "/dashboard",
     });
     console.log(result)
@@ -104,7 +104,6 @@ export default function SignIn() {
             <Button
               className="w-full py-2 px-4"
               onClick={handleSignIn}
-              disabled={loading}
             >
               {loading ? (
                 <span className="spinner-border spinner-border-sm text-white" />

@@ -29,8 +29,7 @@ export default async function P2PTransactionsPage(){
     const transactions = await getP2PTransactions();
 
     return (
-        <div className="w-full">
-            {JSON.stringify(transactions)}
+        <div className="w-full p-5">
             <UserTransactions transactions={transactions} />
         </div>
     );
