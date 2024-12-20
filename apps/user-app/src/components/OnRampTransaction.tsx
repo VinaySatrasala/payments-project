@@ -1,5 +1,6 @@
-import React from 'react'
-import getOnRampTransactions  from "../app/lib/actions/OnRampTransactions";
+"use client"
+import React, { useEffect, useState } from 'react'
+import getOnRampTransactions from "../app/lib/actions/OnRampTransactions";
 import {
   Card,
   CardHeader,
@@ -15,9 +16,45 @@ import {
   TableCell,
 } from "@repo/ui/Table";
 
-export default async function OnRampTransactions(): Promise<React.ReactElement> {
-  const transactions = await getOnRampTransactions();
+export default function OnRampTransactions(): JSX.Element {
+  const [transactions, setTransactions] = useState<{ id: number; time: Date; amount: number; status: string; provider: string; }[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      const data = await getOnRampTransactions();
+      setTransactions(data);
+      setLoading(false);
+    };
+    fetchTransactions();
+  }, []);
+
+  if (loading) {
+    return (
+      <Card className="w-full max-w-4xl mx-auto">
+        <CardHeader>
+          <CardTitle>Loading...</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Status</TableHead>
+                <TableHead>Customer</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead className="text-right">Amount</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableCell colSpan={4} className="text-center">Loading...</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    );
+  }
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
