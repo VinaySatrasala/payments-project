@@ -1,9 +1,34 @@
+"use client"
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/CardTable";
+import { useEffect, useState } from "react";
+import BalanceFetch from "../app/lib/actions/BalanceFetch";
 
-export const BalanceCard = ({ amount, locked }: {
-    amount: number;
-    locked: number;
-}) => {
+export const BalanceCard = () => {
+    const [balance, setBalance] = useState({ amount: 0, locked: 0 });
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        async function getBalance() {
+            const res = await BalanceFetch();
+            setBalance(res);
+            setLoading(false);
+        }
+        getBalance();
+    }, []);
+
+    if(loading) {
+        return (<Card>
+            <CardHeader>
+                <CardTitle>
+                    Loading...
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="text-center">
+                    Loading...
+                </div>
+            </CardContent>
+        </Card>)
+    }
     return <Card>
         <CardHeader>
             <CardTitle>
@@ -16,7 +41,7 @@ export const BalanceCard = ({ amount, locked }: {
                     Unlocked balance
                 </div>
                 <div>
-                    {amount / 100} INR
+                    {balance.amount / 100} INR
                 </div>
             </div>
             <div className="flex justify-between border-b border-slate-300 p-2">
@@ -24,7 +49,7 @@ export const BalanceCard = ({ amount, locked }: {
                     Total Locked Balance
                 </div>
                 <div>
-                    {locked / 100} INR
+                    {balance.locked / 100} INR
                 </div>
             </div>
             <div className="flex justify-between border-b border-slate-300 p-2">
@@ -32,7 +57,7 @@ export const BalanceCard = ({ amount, locked }: {
                     Total Balance
                 </div>
                 <div>
-                    {(locked + amount) / 100} INR
+                    {(balance.amount + balance.locked) / 100} INR
                 </div>
             </div>
         </CardContent>

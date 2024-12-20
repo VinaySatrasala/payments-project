@@ -5,30 +5,6 @@ import OnRampTransactions  from "../../../components/OnRampTransaction";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 
-// Fetch the user's balance
-async function getBalance(userId: number) {
-    const balance = await prisma.balance.findFirst({
-        where: { userId },
-    });
-    return {
-        amount: balance?.amount || 0,
-        locked: balance?.locked || 0,
-    };
-}
-
-// Fetch the user's on-ramp transactions
-async function getOnRampTransactions(userId: number) {
-    const txns = await prisma.onRampTransaction.findMany({
-        where: { userId },
-    });
-    return txns.map((t) => ({
-        id : t.id,
-        time: t.startTime,
-        amount: t.amount,
-        status: t.status,
-        provider: t.provider,
-    }));
-}
 
 // Main TransferPage component
 export default async function TransferPage() {
@@ -46,10 +22,6 @@ export default async function TransferPage() {
     // @ts-ignore
     const userId = Number(session.user.id);
 
-    // Fetch balance and transactions data
-    const balance = await getBalance(userId);
-    const transactions = await getOnRampTransactions(userId);
-
     return (
 
         <div className="w-screen">
@@ -61,7 +33,9 @@ export default async function TransferPage() {
                     <AddMoney />
                 </div>
                 <div>
-                    <BalanceCard amount={balance.amount} locked={balance.locked} />
+                    <div>
+                        {/* <BalanceCard/> */}
+                    </div>
                     <div className="pt-4">
                         <OnRampTransactions/>
                     </div>

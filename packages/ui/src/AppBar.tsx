@@ -39,7 +39,7 @@ export const AppBar = ({
           {/* Logo Section */}
           <div className="flex items-center">
             <a href="/" className="text-white text-xl font-bold">
-              PayTM
+              Simple
             </a>
           </div>
 
