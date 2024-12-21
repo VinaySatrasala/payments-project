@@ -1,29 +1,44 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "@repo/ui/CardTable";
 import { Center } from "@repo/ui/Center";
 import { useSession } from "next-auth/react";
 import P2P from "@repo/ui/P2P";
+import getP2PTransactions from "../app/lib/actions/P2PTransactions";
 
 interface Transaction {
   id: number;
   fromUserId: number;
   toUserId: number;
   amount: number;
-  timestamp: Date;
+  timestamp: Date; // Updated to Date
 }
 
-interface UserTransactionsProps {
-  transactions: Transaction[];
-}
-
-  
-  
-export default function UserTransactions({ transactions }: UserTransactionsProps) {
+export default function UserTransactions():JSX.Element {
   const { data: session, status } = useSession();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  if (status === "loading") {
+  useEffect(() => {
+    async function fetchTransactions() {
+      try {
+        const fetchedTransactions = await getP2PTransactions();
+        const transformedTransactions = fetchedTransactions.map((tx: any) => ({
+          ...tx,
+          timestamp: new Date(tx.timestamp), // Ensure timestamp is a Date object
+        }));
+        setTransactions(transformedTransactions);
+      } catch (error) {
+        console.error("Failed to fetch transactions:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchTransactions();
+  }, []);
+
+  if (status === "loading" || loading) {
     return (
       <Center>
         <p>Loading...</p>
@@ -33,57 +48,60 @@ export default function UserTransactions({ transactions }: UserTransactionsProps
 
   if (!session) {
     return (
-      <Center>
+      <>
         <p className="text-slate-500">Please log in to view transactions.</p>
-      </Center>
+      </>
     );
   }
 
   if (!transactions || transactions.length === 0) {
     return (
-      <Card title="Transactions">
-        <p className="text-slate-500">No transactions found.</p>
+      <Card>
+        <CardHeader>
+          <h1 className="text-xl font-bold">Transactions</h1>
+        </CardHeader>
+        <CardContent>
+          <p className="text-slate-500">No transactions found.</p>
+        </CardContent>
       </Card>
     );
   }
 
   return (
-    <Center>
-      <Card className="w-full max-w-3xl">
-        <CardHeader>
-          <h1 className="text-2xl font-bold">P2P Transactions</h1>
-        </CardHeader>
-        <CardContent>
+    <>
+      <div className="">
+        <div>
           <ul className="space-y-4">
             {transactions.map((transaction) => {
-              // @ts-ignore
-              const isReceived = transaction.toUserId === Number(session.user?.id);
+              const isReceived =
+                transaction.toUserId === Number(session.user?.id);
               return (
                 <li key={transaction.id}>
-                  <Card>
+                  <Card className="bg-gray-900 text-white">
                     <P2P
                       icon={isReceived ? <Received /> : <Sent />}
                       type={isReceived ? "Received" : "Sent"}
-                      id={isReceived
-                        ? `From User: ${transaction.fromUserId}`
-                        : `To User: ${transaction.toUserId}`}
+                      id={
+                        isReceived
+                          ? `From User: ${transaction.fromUserId}`
+                          : `To User: ${transaction.toUserId}`
+                      }
                       amount={`₹ ${(transaction.amount / 100).toFixed(2)}`}
-                      date={transaction.timestamp.toLocaleDateString() + " " + transaction.timestamp.toLocaleTimeString()+" IST"}
-
+                      date={formatDate(transaction.timestamp)}
                     />
                   </Card>
                 </li>
               );
             })}
           </ul>
-        </CardContent>
-      </Card>
-    </Center>
+        </div>
+      </div>
+    </>
   );
 }
 
-function formatDate(timestamp: string): string {
-  return new Date(timestamp).toLocaleString("en-US", {
+function formatDate(timestamp: Date): string {
+  return timestamp.toLocaleString("en-US", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -102,10 +120,14 @@ function Received(): JSX.Element {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="w-8 h-8"
+      className="w-8 h-8 text-green-500"
       aria-hidden="true"
     >
-      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 4.5 15 15m0 0V8.25m0 11.25H8.25" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m4.5 4.5 15 15m0 0V8.25m0 11.25H8.25"
+      />
     </svg>
   );
 }
@@ -118,12 +140,14 @@ function Sent(): JSX.Element {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="w-9 h-9"
+      className="w-9 h-9 text-red-500"
       aria-hidden="true"
     >
-      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
+      />
     </svg>
   );
 }
-
-

@@ -2,10 +2,11 @@
 import { Button } from "@repo/ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/CardTable";
 import { Select } from "@repo/ui/Select";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { createOnRampTransaction } from "../app/lib/actions/CreateOnRampTransaction";
 import { Label } from "@repo/ui/Label";
 import { Input } from "@repo/ui/Input";
+import { useSession } from "next-auth/react";
 
 const SUPPORTED_BANKS = [{
     name: "HDFC Bank",
@@ -16,13 +17,28 @@ const SUPPORTED_BANKS = [{
 }];
 
 export const AddMoney = () => {
-    const [redirectUrl, setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);
+    const [ redirectUrl,setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);
     const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
     const [value, setValue] = useState(0)
+    const { data: session, status } = useSession();
+
+    if (status === "loading") {
+      return (
+          <p>Loading...</p>
+      );
+    }
+  
+    if (!session) {
+      return (
+        <>
+          <p className="text-slate-500">Please log in to view transactions.</p>
+        </>
+      );
+    }
     return <Card>
         <CardHeader>
             <CardTitle>
-                Add Money
+                Enter Details
             </CardTitle>
         </CardHeader>
         <CardContent>

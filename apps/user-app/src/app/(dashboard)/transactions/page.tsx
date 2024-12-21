@@ -1,36 +1,23 @@
-import { getServerSession } from "next-auth";
-import prisma from "@repo/db/client";
+"use client";
+import { Center } from "@repo/ui/Center";
 import UserTransactions from "../../../components/UserTransactions";
-import { authOptions } from "../../lib/auth";
+import { PageHeader } from "@repo/ui/PageHeader";
 
-async function getP2PTransactions() {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-        throw new Error("User is not authenticated");
-    }
-    // @ts-ignore
-    const userId = Number(session.user?.id);
-
-    // Fetch all transactions where the user is either the sender or the receiver
-    return await prisma.p2pTransfer.findMany({
-        where: {
-            OR: [
-                { fromUserId: userId },
-                { toUserId: userId }
-            ]
-        },
-        orderBy: {
-            timestamp: 'asc' // Sort directly in the database
-        }
-    });
-}
-
-export default async function P2PTransactionsPage(){
-    const transactions = await getP2PTransactions();
-
-    return (
-        <div className="w-full p-5">
-            <UserTransactions transactions={transactions} />
-        </div>
-    );
+export default function P2PTransactionsPage() {
+  return (
+    <div className="w-full">
+      <div className="w-full p-10">
+        <Center>
+          <PageHeader title="Peer To Peer Transactions" />
+        </Center>
+      </div>
+      <div>
+        <Center>
+          <div className="w-1/2">
+            <UserTransactions/>
+          </div>
+        </Center>
+      </div>
+    </div>
+  );
 }

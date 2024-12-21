@@ -7,7 +7,7 @@
     "type-check": "turbo type-check",
     "clean": "turbo clean",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "db:generate" : "cd packages/db && prisma generate && cd ../.."
+    "db:generate": "cd packages/db && prisma generate && cd ../.."
   },
   "devDependencies": {
     "prettier": "^3.2.5",
@@ -24,6 +24,9 @@
     "packages/*"
   ],
   "dependencies": {
+    "framer-motion": "^11.15.0",
+    "lucide-react": "^0.469.0",
+    "react-icons": "^5.4.0",
     "recoil": "^0.7.7"
   }
 }

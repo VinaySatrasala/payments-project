@@ -19,7 +19,9 @@
     "./Label" : "./src/Label.tsx",
     "./CardTable" : "./src/CardTable.tsx",
     "./Table" : "./src/Table.tsx",
-    "./P2P" : "./src/P2P.tsx"
+    "./P2P" : "./src/P2P.tsx",
+    "./Skeleton" : "./src/BalanceSkeleton.tsx",
+    "./PageHeader" : "./src/PageHeader.tsx"
   },
   "license": "MIT",
   "scripts": {
