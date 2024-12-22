@@ -1,6 +1,6 @@
 import { Center } from "@repo/ui/Center";
-import { BalanceCard } from "../../../components/BalanceCard";
 import { PageHeader } from "@repo/ui/PageHeader";
+import { BalanceCard } from "../../../components/BalanceCard";
 
 export default function page() {
   return (

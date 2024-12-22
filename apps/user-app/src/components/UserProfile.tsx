@@ -1,31 +1,33 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Card } from "@repo/ui/CardTable";
 import { Center } from "@repo/ui/Center";
-import { useEffect, useState } from "react";
-import userFetch from "../app/lib/actions/UserFetch";
 import { Button } from "@repo/ui/Button";
 import { Input } from "@repo/ui/Input";
+import userFetch from "../app/lib/actions/UserFetch";
+import { userUpdate } from "../app/lib/actions/UserUpdate";
+import { useRouter } from "next/navigation";
 
 interface User {
-  number: string;
   id: number;
-  email: string | null;
   name: string | null;
+  email: string | null;
+  number: string;
 }
 
 export const UserProfile = () => {
   const [user, setUser] = useState<User | null>(null);
   const [editingField, setEditingField] = useState<string | null>(null);
   const [formValues, setFormValues] = useState<Partial<User>>({});
-  const [password, setPassword] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchUser() {
       const response = await userFetch();
       setUser(response);
       if (response) {
-        setFormValues(response); // Pre-fill form values
+        setFormValues(response);
       }
     }
     fetchUser();
@@ -36,133 +38,96 @@ export const UserProfile = () => {
   };
 
   const handleSave = async () => {
-    // Save updated user data (call an API here if needed)
-    console.log("Saving user data:", formValues);
-    setUser((prev) => ({ ...prev, ...formValues } as User));
-    setEditingField(null);
-  };
-
-  const handlePasswordChange = async () => {
-    // Update password (call an API here if needed)
-    console.log("Updating password:", password);
-    setPassword(""); // Clear password field after update
+    if (user) {
+      const updatedUser = { ...user, ...formValues };
+      await userUpdate(updatedUser);
+      setUser(updatedUser);
+      setEditingField(null);
+    }
   };
 
   return (
-    <div className="w-full ">
+    <div className="w-full min-h-screen p-8">
       <Center>
-        <Card className="">
-          <h1 className="text-xl font-semibold text-gray-800 mb-4">User Profile</h1>
-          {user ? (
-            <div className="space-y-4">
-              {/* Name Field */}
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Name:</span>
-                {editingField === "name" ? (
-                  <Input
-                    type="text"
-                    value={formValues.name || ""}
-                    onchange={(e) => handleInputChange("name", e.target.value)}
-                    className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-400"
-                  />
-                ) : (
-                  <span className="text-gray-800">{user.name || "N/A"}</span>
-                )}
-                <Button
-                  onClick={() =>
-                    setEditingField((prev) => (prev === "name" ? null : "name"))
-                  }
-                  className="text-green-500 hover:underline ml-2"
-                >
-                  {editingField === "name" ? "Cancel" : "Edit"}
-                </Button>
-              </div>
+        <Card className="w-full max-w-2xl p-6 bg-gray-800 shadow-md rounded-lg">
+          <div className="flex items-start space-x-6">
+            {/* Avatar */}
+            <Avatar />
+            {/* Profile Content */}
+            <div className="flex-1 space-y-4">
+              <h1 className="text-2xl font-semibold text-white">User Profile</h1>
 
-              {/* Email Field */}
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Email:</span>
-                {editingField === "email" ? (
-                  <Input
-                    type="email"
-                    value={formValues.email || ""}
-                    onchange={(e) => handleInputChange("email", e.target.value)}
-                    className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-400"
-                  />
-                ) : (
-                  <span className="text-gray-800">{user.email || "N/A"}</span>
-                )}
-                <Button
-                  onClick={() =>
-                    setEditingField((prev) => (prev === "email" ? null : "email"))
-                  }
-                  className="text-green-500 hover:underline ml-2"
-                >
-                  {editingField === "email" ? "Cancel" : "Edit"}
-                </Button>
-              </div>
+              {["name", "email", "number"].map((field) => (
+                <div key={field} className="flex items-center justify-between">
+                  <span className="text-gray-300 capitalize">{field}:</span>
+                  {editingField === field ? (
+                    <Input
+                      type={field === "email" ? "email" : "text"}
+                      value={formValues[field as keyof User] || ""}
+                      onchange={(e) => handleInputChange(field, e.target.value)}
+                      className="flex-1 mx-2 bg-gray-700 text-white"
+                    />
+                  ) : (
+                    <span className="text-white">
+                      {user?.[field as keyof User] || "N/A"}
+                    </span>
+                  )}
+                  <Button
+                    onClick={() =>
+                      setEditingField((prev) => (prev === field ? null : field))
+                    }
+                    className="text-black bg-white hover:bg-green-300 px-3"
+                  >
+                    {editingField === field ? "Cancel" : "Edit"}
+                  </Button>
+                </div>
+              ))}
 
-              {/* Phone Number Field */}
-              <div className="flex items-center justify-between">
-                <span className="text-gray-600">Phone:</span>
-                {editingField === "number" ? (
-                  <Input
-                    type="text"
-                    value={formValues.number || ""}
-                    onchange={(e) => handleInputChange("number", e.target.value)}
-                    className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-400"
-                  />
-                ) : (
-                  <span className="text-gray-800">{user.number || "N/A"}</span>
-                )}
-                <Button
-                  onClick={() =>
-                    setEditingField((prev) => (prev === "number" ? null : "number"))
-                  }
-                  className="text-green-500 hover:underline ml-2"
-                >
-                  {editingField === "number" ? "Cancel" : "Edit"}
-                </Button>
-              </div>
-
-              {/* Save Button */}
               {editingField && (
                 <div className="text-right">
                   <Button
                     onClick={handleSave}
-                    className="bg-green-500 text-white px-4 py-2 rounded shadow hover:bg-green-600 transition duration-200"
+                    className="bg-green-500 text-black px-4 py-2 rounded shadow hover:bg-green-600"
                   >
                     Save
                   </Button>
                 </div>
               )}
 
-              {/* Password Change Section */}
+              {/* Change Password Button */}
               <div className="mt-6">
-                <h2 className="text-lg font-medium text-gray-800 mb-2">
+                <Button
+                  onClick={() => router.push("/change-password")}
+                  className="bg-red-500 text-black px-4 py-2 rounded shadow hover:bg-red-600"
+                >
                   Change Password
-                </h2>
-                <div className="flex items-center space-x-4">
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="New Password"
-                    className="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-green-400 flex-1"
-                  />
-                  <Button
-                    onClick={handlePasswordChange}
-                    className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600 transition duration-200"
-                  >
-                    Update
-                  </Button>
-                </div>
+                </Button>
               </div>
             </div>
-          ) : (
-            <div className="text-gray-500">Loading user data...</div>
-          )}
+          </div>
         </Card>
       </Center>
     </div>
   );
 };
+
+function Avatar(): JSX.Element {
+  return (
+    <div className="w-24 h-24 flex-shrink-0">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="1.5"
+        stroke="white"
+        className="w-full h-full"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+        />
+      </svg>
+    </div>
+  );
+}
