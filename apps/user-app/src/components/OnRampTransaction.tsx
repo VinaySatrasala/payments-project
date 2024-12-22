@@ -58,7 +58,7 @@ export default function OnRampTransactions(): JSX.Element {
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
-        <CardTitle>Recent Transactions</CardTitle>
+        <CardTitle>Recent </CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -86,7 +86,7 @@ export default function OnRampTransactions(): JSX.Element {
                 </TableCell>
                 <TableCell>{transaction.provider}</TableCell>
                 <TableCell>{new Date(transaction.time).toDateString()}</TableCell>
-                <TableCell className="text-right">{transaction.amount.toString()}</TableCell>
+                <TableCell className="">{transaction.amount.toString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -29,10 +29,10 @@ export default function SendMoney() {
 
   return (
     <div className="h-full p-4">
-      <Center>
+      <>
         <Card className="w-full max-w-lg">
           <CardHeader>
-            <h1 className="text-2xl font-semibold">P2P Transfers</h1>
+            <h1 className="text-2xl font-semibold">Enter User Details</h1>
           </CardHeader>
           <CardContent>
             <div className="pt-2 space-y-6">
@@ -83,7 +83,7 @@ export default function SendMoney() {
             </div>
           </CardContent>
         </Card>
-      </Center>
+      </>
     </div>
   );
 }
