@@ -7,7 +7,7 @@ import { Center } from "@repo/ui/Center";
 export default async function TransferPage() {
   return (
     <div className="w-full">
-      <div className="w-full p-10">
+      <div className="w-full p-10;">
         <Center>
           <PageHeader title="TopUp Wallet" />
         </Center>
