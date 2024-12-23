@@ -1,13 +1,8 @@
-import { getServerSession } from "next-auth";
-import { redirect } from 'next/navigation'
-import { authOptions } from "./lib/auth";
+import Home from "../components/landing-page";
 
-export default async function Page() : Promise<void> {
-  const session = await getServerSession(authOptions);
-  if (session?.user) {
-    redirect('/dashboard')
-  } else {
-    redirect('/api/auth/signin')
-  }
 
+export default function Page() : JSX.Element {
+  return(
+    <Home/>
+  )
 }
