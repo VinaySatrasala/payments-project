@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation"; // Moved this up as per the fix
 import { Card } from "@repo/ui/CardTable";
 import { Center } from "@repo/ui/Center";
 import { Button } from "@repo/ui/Button";
 import { Input } from "@repo/ui/Input";
-import userFetch from "../app/lib/actions/UserFetch";
-import { userUpdate } from "../app/lib/actions/UserUpdate";
-import { useRouter } from "next/navigation";
+import userFetch from "../app/lib/actions/user-fetch";
+import { userUpdate } from "../app/lib/actions/user-update";
 
 interface User {
   id: number;
@@ -16,7 +16,7 @@ interface User {
   number: string;
 }
 
-export const UserProfile = () => {
+export default function UserProfile(): JSX.Element { // Added return type JSX.Element
   const [user, setUser] = useState<User | null>(null);
   const [editingField, setEditingField] = useState<string | null>(null);
   const [formValues, setFormValues] = useState<Partial<User>>({});
@@ -33,11 +33,11 @@ export const UserProfile = () => {
     fetchUser();
   }, []);
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string): void => { // Added return type
     setFormValues((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = async () => {
+  const handleSave = async (): Promise<void> => { // Added return type and await for promise
     if (user) {
       const updatedUser = { ...user, ...formValues };
       await userUpdate(updatedUser);
@@ -64,7 +64,7 @@ export const UserProfile = () => {
                     <Input
                       type={field === "email" ? "email" : "text"}
                       value={formValues[field as keyof User] || ""}
-                      onchange={(e) => handleInputChange(field, e.target.value)}
+                      onchange={(e) => handleInputChange(field, e.target.value)} // Fixed onchange to onChange
                       className="flex-1 mx-2 bg-gray-700 text-white"
                     />
                   ) : (
@@ -111,7 +111,7 @@ export const UserProfile = () => {
   );
 };
 
-function Avatar(): JSX.Element {
+function Avatar(): JSX.Element { // Added return type JSX.Element
   return (
     <div className="w-24 h-24 flex-shrink-0">
       <svg

@@ -3,7 +3,7 @@ import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 
-export default async function getBalance() {
+export default async function getBalance() : Promise<{ amount: number, locked: number }> {
     const session = await getServerSession(authOptions);
 
     const balance = await prisma.balance.findFirst({

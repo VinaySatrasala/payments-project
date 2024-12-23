@@ -1,26 +1,36 @@
-"use client";
+'use client';
 
-import { Button } from "@repo/ui/Button";
-import { Card } from "@repo/ui/CardTable";
-import { Input } from "@repo/ui/Input";
-import { Label } from "@repo/ui/Label";
-import { ChangeEvent, useState } from "react";
-import { passwordChange } from "../app/lib/actions/PasswordChange";
+import { ChangeEvent, useState } from 'react';
+import { Button } from '@repo/ui/Button';
+import { Card } from '@repo/ui/CardTable';
+import { Input } from '@repo/ui/Input';
+import { Label } from '@repo/ui/Label';
+import { passwordChange } from '../app/lib/actions/password-change';
 
-export const ChangePassword = () => {
-  const [oldPassword, setOldPassword] = useState<string>("");
-  const [newPassword, setNewPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
+export default function ChangePassword(): JSX.Element {
+  const [oldPassword, setOldPassword] = useState<string>('');
+  const [newPassword, setNewPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [error, setError] = useState<string>(''); // For error handling
+  const [_loading, setLoading] = useState<boolean>(false); // For loading state
 
-  const handlePasswordChange = async () => {
+  const handlePasswordChange = async (): Promise<void> => {
     if (newPassword !== confirmPassword) {
-      alert("New Password and Confirm Password do not match!");
+      setError('New Password and Confirm Password do not match!');
       return;
     }
 
-    // Call PasswordChange action
-    const response = await passwordChange({ oldPassword, newPassword });
+    setError('');
+    setLoading(true);
 
+    try {
+      await passwordChange({ oldPassword, newPassword });
+      setError('Password changed successfully!');
+    } catch (error) {
+      setError('Failed to change password. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -72,6 +82,7 @@ export const ChangePassword = () => {
           Change Password
         </Button>
       </div>
+      {error && <div className="text-red-500 text-center">{error}</div>}
     </Card>
   );
 };

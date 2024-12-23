@@ -1,16 +1,20 @@
 "use server"
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth";
-import prisma from "@repo/db/client";
-export async function P2P(to : string, amount : number){
-    const session = await getServerSession(authOptions);
-    // @ts-ignore
-    const from =  session?.user?.id;
 
-    console.log("reached" + from)
+import { getServerSession } from "next-auth";
+import prisma from "@repo/db/client";
+import { authOptions } from "../auth";
+
+export async function P2P(to : string, amount : number) : Promise<{message : string}>{
+    const session = await getServerSession(authOptions);
+
+    if(!session || !session.user){
+        throw new Error("Unauthorized");
+    }
+    const from =  session.user.id;
+
     if(!from){
         return {
-            message : "Error while sendind....No from user"
+            "message" : "Error while sendind....No from user"
         }
     }
 
@@ -61,7 +65,7 @@ export async function P2P(to : string, amount : number){
 
         await tx.p2pTransfer.create({
             data : {
-                amount : amount,
+                amount,
                 timestamp : new Date(),
                 fromUserId : Number(from),
                 toUserId : Number(toUser.id), 

@@ -1,8 +1,7 @@
 "use client"
-import { Card } from "@repo/ui/CardTable";
-import { UserProfile } from "../../components/UserProfile";
+import UserProfile from "../../components/user-profile";
 
-export default function Profile() {
+export default function Profile(): JSX.Element {
     return (
         <div className="w-full">
             <UserProfile />

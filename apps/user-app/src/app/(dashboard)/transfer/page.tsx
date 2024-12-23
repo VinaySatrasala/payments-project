@@ -1,10 +1,10 @@
 "use client";
 import { PageHeader } from "@repo/ui/PageHeader";
-import { AddMoney } from "../../../components/AddMoney";
 import { Center } from "@repo/ui/Center";
+import AddMoney  from "../../../components/add-money";
 
 // Main TransferPage component
-export default async function TransferPage() {
+export default function TransferPage() : JSX.Element {
   return (
     <div className="w-full">
       <div className="w-full p-10">

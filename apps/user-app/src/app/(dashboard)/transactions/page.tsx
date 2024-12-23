@@ -1,9 +1,9 @@
 "use client";
 import { Center } from "@repo/ui/Center";
-import UserTransactions from "../../../components/UserTransactions";
 import { PageHeader } from "@repo/ui/PageHeader";
+import UserTransactions from "../../../components/user-transactions";
 
-export default function P2PTransactionsPage() {
+export default function P2PTransactionsPage():JSX.Element {
   return (
     <div className="w-full">
       <div className="w-full p-10">

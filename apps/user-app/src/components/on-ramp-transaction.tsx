@@ -1,6 +1,5 @@
-"use client"
-import React, { useEffect, useState } from 'react'
-import getOnRampTransactions from "../app/lib/actions/OnRampTransactions";
+'use client';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -15,16 +14,22 @@ import {
   TableRow,
   TableCell,
 } from "@repo/ui/Table";
+import getOnRampTransactions from "../app/lib/actions/on-ramp-transactions";
 
 export default function OnRampTransactions(): JSX.Element {
   const [transactions, setTransactions] = useState<{ id: number; time: Date; amount: number; status: string; provider: string; }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      const data = await getOnRampTransactions();
-      setTransactions(data);
-      setLoading(false);
+  useEffect((): void => {
+    const fetchTransactions = async (): Promise<void> => {
+      try {
+        const data = await getOnRampTransactions();
+        setTransactions(data);
+      } catch (error) {
+        console.error("Failed to fetch transactions", error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchTransactions();
   }, []);
@@ -55,10 +60,11 @@ export default function OnRampTransactions(): JSX.Element {
       </Card>
     );
   }
+
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
-        <CardTitle>Recent </CardTitle>
+        <CardTitle>Recent Transactions</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -75,18 +81,17 @@ export default function OnRampTransactions(): JSX.Element {
               <TableRow key={transaction.id.toString()}>
                 <TableCell>
                   <span
-                    className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${
-                      transaction.status === 'Success' ? 'bg-green-500/20 text-green-500' :
-                      transaction.status === 'Processing' ? 'bg-yellow-500/20 text-yellow-500' :
-                      'bg-red-500/20 text-red-500'
-                    }`}
+                    className={`inline-block px-2 py-1 text-xs font-medium rounded-full 
+                      ${transaction.status === 'Success' ? 'bg-green-500/20 text-green-500' : ''} 
+                      ${transaction.status === 'Processing' ? 'bg-yellow-500/20 text-yellow-500' : ''} 
+                      ${transaction.status === 'Failed' ? 'bg-red-500/20 text-red-500' : ''}`}
                   >
                     {transaction.status}
                   </span>
                 </TableCell>
                 <TableCell>{transaction.provider}</TableCell>
                 <TableCell>{new Date(transaction.time).toDateString()}</TableCell>
-                <TableCell className="">{transaction.amount.toString()}</TableCell>
+                <TableCell className="text-right">{transaction.amount.toString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>

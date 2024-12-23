@@ -3,10 +3,8 @@ import prisma from "@repo/db/client"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../auth"
 
-export async function createOnRampTransaction( provider: string, amount: number) {
+export async function createOnRampTransaction( provider: string, amount: number): Promise<{ message: string }> {
     const session = await getServerSession(authOptions);
-    console.log(amount)
-    // @ts-ignore
     if(!session?.user || !session.user?.id){
         return {
             "message" : "unauthorized Request"
@@ -20,10 +18,9 @@ export async function createOnRampTransaction( provider: string, amount: number)
             provider,
             status : "Processing",
             startTime : new Date(),
-            token : token,
-            // @ts-ignore
-            userId : Number(session?.user?.id),
-            amount : amount
+            token,
+            userId : Number(session.user.id),
+            amount
         }
     });
 

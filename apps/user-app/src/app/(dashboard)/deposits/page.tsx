@@ -1,7 +1,7 @@
 "use client";
 import { PageHeader } from "@repo/ui/PageHeader";
-import OnRampTransactions from "../../../components/OnRampTransaction";
 import { Center } from "@repo/ui/Center";
+import OnRampTransactions from "../../../components/on-ramp-transaction";
 
 export default function page():JSX.Element {
   return (

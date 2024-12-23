@@ -1,18 +1,18 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import BalanceFetch from '../app/lib/actions/BalanceFetch';
+import { AiFillLock, AiOutlineCheckCircle, AiOutlineEllipsis } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
 import { Card } from '@repo/ui/CardTable';
 import { Center } from '@repo/ui/Center';
-import { AiFillLock, AiOutlineCheckCircle, AiOutlineEllipsis } from 'react-icons/ai';
+import BalanceFetch from '../app/lib/actions/balance-fetch';
 
 interface BalanceData {
   amount: number;
   locked: number;
 }
 
-export const BalanceCard = () => {
+function BalanceCard(): JSX.Element {
   const [balance, setBalance] = useState<BalanceData>({ amount: 0, locked: 0 });
   const [loading, setLoading] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -30,12 +30,14 @@ export const BalanceCard = () => {
         setLoading(false);
       }
     }
-    getBalance();
+    getBalance().catch((error) => {
+      console.error('Failed to fetch balance:', error);
+    });
   }, []);
 
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  const toggleDropdown = (): void => setDropdownOpen(!dropdownOpen);
 
-  const handleNavigation = (path: string) => {
+  const handleNavigation = (path: string): void => {
     router.push(path);
     setDropdownOpen(false);
   };
@@ -61,6 +63,7 @@ export const BalanceCard = () => {
       {/* Dropdown Button */}
       <div className="absolute top-4 right-4">
         <button
+          type="button"
           onClick={toggleDropdown}
           className="text-white text-2xl focus:outline-none"
         >
@@ -120,4 +123,6 @@ export const BalanceCard = () => {
       </div>
     </Card>
   );
-};
+}
+
+export default BalanceCard;

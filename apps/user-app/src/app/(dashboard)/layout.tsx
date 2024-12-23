@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-  import {
+import {
   Home,
   Send,
   FileText,
@@ -8,7 +8,7 @@ import React from "react";
   Wallet,
   DollarSign,
 } from "lucide-react";
-import { SidebarItem } from "../../components/SideBarItem";
+import  SidebarItem  from "../../components/side-bar-item";
 
 export default function Layout({
   children,
@@ -20,12 +20,12 @@ export default function Layout({
       {/* Sidebar */}
       <div className="w-72 bg-black text-white min-h-screen border-r border-gray-700">
         <div className="pt-8 px-4 space-y-4">
-          <SidebarItem href="/dashboard" title="Home" icon={<Home size={20} />} />
-          <SidebarItem href="/transfer" title="Transfer" icon={<Send size={20} />} />
-          <SidebarItem href="/transactions" title="Transactions" icon={<FileText size={20} />} />
-          <SidebarItem href="/P2Ptransfer" title="P2P Transfer" icon={<Users size={20} />} />
-          <SidebarItem href="/deposits" title="Deposits" icon={<Wallet size={20} />} />
-          <SidebarItem href="/balance" title="Balance" icon={<DollarSign size={20} />} />
+          <SidebarItem icon={<Home size={20} />} href="/dashboard" title="Home" />
+          <SidebarItem icon={<Send size={20} />} href="/transfer" title="Transfer" />
+          <SidebarItem icon={<FileText size={20} />} href="/transactions" title="Transactions" />
+          <SidebarItem icon={<Users size={20} />} href="/P2Ptransfer" title="P2P Transfer" />
+          <SidebarItem icon={<Wallet size={20} />} href="/deposits" title="Deposits" />
+          <SidebarItem icon={<DollarSign size={20} />} href="/balance" title="Balance" />
         </div>
       </div>
       {/* Main Content */}
@@ -33,5 +33,3 @@ export default function Layout({
     </div>
   );
 }
-
-

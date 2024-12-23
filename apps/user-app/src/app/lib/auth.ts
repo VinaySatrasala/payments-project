@@ -1,8 +1,10 @@
-import prisma from "@repo/db/client";
+"use server"
+
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcrypt";
+import { hash, compare } from "bcrypt";
 import z from "zod";
 import { AuthOptions } from "next-auth";
+import prisma from "@repo/db/client";
 
 const CredentialsSchema = z.object({
   phone: z.string().min(10).max(15),
@@ -17,19 +19,22 @@ export const authOptions: AuthOptions = {
         phone: { label: "Phone number", type: "text", placeholder: "1231231231" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any) {
+      async authorize(credentials: Record<"phone" | "password", string> | undefined) {
         const parsed = CredentialsSchema.safeParse(credentials);
         if (!parsed.success) {
           throw new Error("Invalid credentials format");
         }
 
-        const hashedPassword = await bcrypt.hash(credentials.password, 10);
+        if (!credentials) {
+          throw new Error("Credentials are undefined");
+        }
+
         const existingUser = await prisma.user.findFirst({
           where: { number: credentials.phone },
         });
 
         if (existingUser) {
-          const passwordValidation = await bcrypt.compare(credentials.password, existingUser.password);
+          const passwordValidation = await compare(credentials.password, existingUser.password);
           if (passwordValidation) {
             return {
               id: existingUser.id.toString(),
@@ -39,7 +44,9 @@ export const authOptions: AuthOptions = {
           }
           return null;
         }
+
         try {
+          const hashedPassword = await hash(credentials.password, 10);
           const user = await prisma.user.create({
             data: {
               number: credentials.phone,
@@ -62,13 +69,13 @@ export const authOptions: AuthOptions = {
   ],
   secret: process.env.JWT_SECRET || "secret",
   callbacks: {
-    async jwt({ token, user }: any) {
+    async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    async session({ token, session }: any) {
+    async session({ token, session }: { token: any; session: any }) {
       if (token) {
         session.user = { ...session.user, id: token.id };
       }

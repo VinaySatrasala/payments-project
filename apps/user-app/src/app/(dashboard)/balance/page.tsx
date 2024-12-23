@@ -1,8 +1,8 @@
 import { Center } from "@repo/ui/Center";
 import { PageHeader } from "@repo/ui/PageHeader";
-import { BalanceCard } from "../../../components/BalanceCard";
+import BalanceCard  from "../../../components/balance-card";
 
-export default function page() {
+export default function page() : JSX.Element{
   return (
     <div className="w-full">
       <div className="w-full p-10">

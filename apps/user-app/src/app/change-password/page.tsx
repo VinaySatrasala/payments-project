@@ -1,7 +1,7 @@
 "use client"
-import { ChangePassword } from "../../components/ChangePassword";
+import  ChangePassword  from "../../components/change-password";
 
-export default function page(){
+export default function page(): JSX.Element {
     return(
         <div>
             <ChangePassword/>

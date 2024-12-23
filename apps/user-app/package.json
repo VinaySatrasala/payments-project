@@ -19,7 +19,9 @@
     "openssl": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "lucide-react": "^0.469.0",
+    "recoil": "^0.7.7"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.2.3",

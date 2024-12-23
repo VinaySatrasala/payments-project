@@ -1,41 +1,46 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { Card, CardContent, CardHeader } from "@repo/ui/CardTable";
 import { Center } from "@repo/ui/Center";
-import { useSession } from "next-auth/react";
 import P2P from "@repo/ui/P2P";
-import getP2PTransactions from "../app/lib/actions/P2PTransactions";
+import getP2PTransactions from "../app/lib/actions/p2p-transactions";
 
 interface Transaction {
   id: number;
   fromUserId: number;
   toUserId: number;
   amount: number;
-  timestamp: Date; // Updated to Date
+  timestamp: Date;
 }
 
-export default function UserTransactions():JSX.Element {
+export default function UserTransactions(): JSX.Element {
   const { data: session, status } = useSession();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect((): void => {
     async function fetchTransactions() {
       try {
-        const fetchedTransactions = await getP2PTransactions();
-        const transformedTransactions = fetchedTransactions.map((tx: any) => ({
+        const fetchedTransactions: Transaction[] = await getP2PTransactions();
+        const transformedTransactions = fetchedTransactions.map((tx) => ({
           ...tx,
           timestamp: new Date(tx.timestamp), // Ensure timestamp is a Date object
         }));
         setTransactions(transformedTransactions);
       } catch (error) {
-        console.error("Failed to fetch transactions:", error);
+        // Handle error properly (you can show an error UI instead of console.log in production)
+        alert("Failed to fetch transactions. Please try again later.");
       } finally {
         setLoading(false);
       }
     }
-    fetchTransactions();
+    fetchTransactions().catch((error) => {
+      // Catch any unhandled promise rejections
+      console.error("Error during transaction fetch:", error);
+      setLoading(false);
+    });
   }, []);
 
   if (status === "loading" || loading) {
@@ -48,13 +53,18 @@ export default function UserTransactions():JSX.Element {
 
   if (!session) {
     return (
-      <>
-        <p className="text-slate-500">Please log in to view transactions.</p>
-      </>
+      <Card>
+        <CardHeader>
+          <h1 className="text-xl font-bold">Transactions</h1>
+        </CardHeader>
+        <CardContent>
+          <p className="text-slate-500">Please log in to view transactions.</p>
+        </CardContent>
+      </Card>
     );
   }
 
-  if (!transactions || transactions.length === 0) {
+  if (transactions.length === 0) {
     return (
       <Card>
         <CardHeader>
@@ -68,35 +78,30 @@ export default function UserTransactions():JSX.Element {
   }
 
   return (
-    <>
-      <div className="">
-        <div>
-          <ul className="space-y-4">
-            {transactions.map((transaction) => {
-              const isReceived =
-                transaction.toUserId === Number(session.user?.id);
-              return (
-                <li key={transaction.id}>
-                  <Card className="bg-gray-900 text-white">
-                    <P2P
-                      icon={isReceived ? <Received /> : <Sent />}
-                      type={isReceived ? "Received" : "Sent"}
-                      id={
-                        isReceived
-                          ? `From User: ${transaction.fromUserId}`
-                          : `To User: ${transaction.toUserId}`
-                      }
-                      amount={`₹ ${(transaction.amount / 100).toFixed(2)}`}
-                      date={formatDate(transaction.timestamp)}
-                    />
-                  </Card>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </div>
-    </>
+    <div>
+      <ul className="space-y-4">
+        {transactions.map((transaction) => {
+          const isReceived = transaction.toUserId === Number(session.user?.id);
+          return (
+            <li key={transaction.id}>
+              <Card className="bg-gray-900 text-white">
+                <P2P
+                  icon={isReceived ? <Received /> : <Sent />}
+                  type={isReceived ? "Received" : "Sent"}
+                  id={
+                    isReceived
+                      ? `From User: ${transaction.fromUserId}`
+                      : `To User: ${transaction.toUserId}`
+                  }
+                  amount={`₹ ${(transaction.amount / 100).toFixed(2)}`}
+                  date={formatDate(transaction.timestamp)}
+                />
+              </Card>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
 

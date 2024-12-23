@@ -1,6 +1,6 @@
 import { Center } from "@repo/ui/Center";
 import { PageHeader } from "@repo/ui/PageHeader";
-import SendMoney from "../../../components/SendMoney";
+import SendMoney from "../../../components/send-money";
 
 export default function P2PTransfer():JSX.Element{
     return(
