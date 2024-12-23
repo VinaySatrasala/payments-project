@@ -5,7 +5,7 @@ import { authOptions } from "../auth"
 
 export async function createOnRampTransaction( provider: string, amount: number): Promise<{ message: string }> {
     const session = await getServerSession(authOptions);
-    if(!session?.user || !session.user?.id){
+    if(!session || !session.user?.id) {
         return {
             "message" : "unauthorized Request"
         }

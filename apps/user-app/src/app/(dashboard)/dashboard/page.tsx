@@ -10,7 +10,7 @@ export default function Page(): JSX.Element {
   const session = useSession();
   const currentHour = new Date().getHours();
 
-  const getGreeting = () => {
+  const getGreeting = () : string => {
     if (currentHour < 12) return "Good Morning";
     if (currentHour < 18) return "Good Afternoon";
     return "Good Evening";

@@ -22,7 +22,7 @@ export default function UserProfile(): JSX.Element { // Added return type JSX.El
   const [formValues, setFormValues] = useState<Partial<User>>({});
   const router = useRouter();
 
-  useEffect(() => {
+  useEffect(() : void  => {
     async function fetchUser() {
       const response = await userFetch();
       setUser(response);

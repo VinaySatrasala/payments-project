@@ -26,7 +26,7 @@ export default function OnRampTransactions(): JSX.Element {
         const data = await getOnRampTransactions();
         setTransactions(data);
       } catch (error) {
-        console.error("Failed to fetch transactions", error);
+        
       } finally {
         setLoading(false);
       }

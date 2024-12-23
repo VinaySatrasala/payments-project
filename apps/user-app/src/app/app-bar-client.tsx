@@ -14,12 +14,12 @@ export default function AppBarClient(): JSX.Element {
     <div>
       <AppBar
         onEditUser={() => {
-          // Handle user edit without returning a promise directly
           router.push("/profile");
         }}
-        onSignIn={signIn}
+        onSignIn={() => {
+          void signIn(); // Explicitly mark the promise as intentionally unhandled
+        }}
         onSignOut={() => {
-          // Handle sign out without returning a promise directly
           void signOut({ callbackUrl: "/auth/signin" }); // Explicitly handle the promise
         }}
         user={user}

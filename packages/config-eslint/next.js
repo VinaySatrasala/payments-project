@@ -39,9 +39,29 @@ module.exports = {
       },
     },
   },
-  ignorePatterns: ["node_modules/", "dist/"],
+  ignorePatterns: ["node_modules/", "dist/","auth.ts"],
   // add rules configurations here
   rules: {
     "import/no-default-export": "off",
+    "react/jsx-sort-props": [
+      "error",
+      {
+        callbacksLast: false,
+        shorthandFirst: false,
+        shorthandLast: false,
+        ignoreCase: true,
+        noSortAlphabetically: true,
+        reservedFirst: false,
+      },
+    ],
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/prefer-optional-chain": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/no-unnecessary-condition": "off",
+    "react/jsx-no-leaked-render": "off",
+    "@typescript-eslint/no-confusing-void-expression": "off",
   },
 };

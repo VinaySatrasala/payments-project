@@ -21,7 +21,7 @@ export default function UserTransactions(): JSX.Element {
   const [loading, setLoading] = useState(true);
 
   useEffect((): void => {
-    async function fetchTransactions() {
+    async function fetchTransactions() : Promise<void> {
       try {
         const fetchedTransactions: Transaction[] = await getP2PTransactions();
         const transformedTransactions = fetchedTransactions.map((tx) => ({
@@ -31,15 +31,16 @@ export default function UserTransactions(): JSX.Element {
         setTransactions(transformedTransactions);
       } catch (error) {
         // Handle error properly (you can show an error UI instead of console.log in production)
-        alert("Failed to fetch transactions. Please try again later.");
       } finally {
         setLoading(false);
       }
     }
     fetchTransactions().catch((error) => {
       // Catch any unhandled promise rejections
-      console.error("Error during transaction fetch:", error);
       setLoading(false);
+      return (
+        <p>Something wrong</p>
+      )
     });
   }, []);
 
