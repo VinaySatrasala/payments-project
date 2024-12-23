@@ -1,5 +1,3 @@
-"use server"
-
 import CredentialsProvider from "next-auth/providers/credentials";
 import { hash, compare } from "bcrypt";
 import z from "zod";
