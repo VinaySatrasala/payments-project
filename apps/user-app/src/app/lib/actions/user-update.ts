@@ -1,9 +1,8 @@
 "use server"
 
 import prisma from "@repo/db/client";
-import { User } from "@prisma/client";  
 
-export const userUpdate = async (updatedUser: { id: number; name: string | null; email: string | null; number: string }): Promise<User> => {
+export const userUpdate = async (updatedUser: { id: number; name: string | null; email: string | null; number: string }): Promise<any> => {
     const user = await prisma.user.update({
         where: {
             id: updatedUser.id,
