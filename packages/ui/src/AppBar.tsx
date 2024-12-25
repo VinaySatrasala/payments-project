@@ -42,7 +42,7 @@ export const AppBar = ({
           {/* Logo Section */}
           <a
             href="/"
-            className="text-white text-2xl font-bold text-green-400 transition duration-200"
+            className="text-green-500 text-2xl font-bold text-green-400 transition duration-200"
           >
             Finly.
           </a>
@@ -98,7 +98,7 @@ export const AppBar = ({
             ) : (
               <Button
                 onClick={onSignIn}
-                className="bg-green-500 text-white hover:bg-green-600 font-bold py-2 px-4 rounded shadow-md transition duration-200"
+                className="bg-green-500 hover:bg-black hover:border-green-600 border hover:text-green-500 hover:underline font-bold py-2 px-4 rounded shadow-md transition duration-200"
               >
                 Sign In
               </Button>
