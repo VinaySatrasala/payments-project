@@ -96,12 +96,13 @@ export const AppBar = ({
                 )}
               </div>
             ) : (
-              <Button
-                onClick={onSignIn}
-                className="bg-green-600 hover:bg-black hover:border-green-600 border hover:text-green-500 hover:underline font-bold py-2 px-4 rounded shadow-md transition duration-200"
-              >
-                Sign In
-              </Button>
+              <button
+              onClick={onSignIn}
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-600 focus:ring-offset-2 focus:ring-offset-neutral-800 disabled:opacity-50 disabled:pointer-events-none bg-green-600 hover:bg-black hover:border-green-600 border hover:text-green-500 hover:underline font-bold py-2 px-4 rounded shadow-md transition duration-200"
+            >
+              Sign In
+            </button>
+            
             )}
           </div>
         </div>
