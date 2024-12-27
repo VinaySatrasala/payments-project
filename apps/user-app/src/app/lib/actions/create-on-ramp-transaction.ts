@@ -3,7 +3,7 @@ import prisma from "@repo/db/client"
 import { getServerSession } from "next-auth"
 import { authOptions } from "../auth"
 
-export async function createOnRampTransaction( provider: string, amount: number): Promise<{ message: string }> {
+export async function createOnRampTransaction( provider: string, amount: number): Promise<{ message: string, token?: string }> {
     const session = await getServerSession(authOptions);
     if(!session || !session.user?.id) {
         return {
@@ -24,7 +24,9 @@ export async function createOnRampTransaction( provider: string, amount: number)
         }
     });
 
+
     return {
-        "message" : "Done"
+        "message" : "Done",
+        "token":token
     }
 }

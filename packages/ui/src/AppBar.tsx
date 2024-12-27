@@ -102,7 +102,6 @@ export const AppBar = ({
             >
               Sign In
             </button>
-            
             )}
           </div>
         </div>

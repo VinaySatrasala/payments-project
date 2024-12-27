@@ -14,7 +14,7 @@ interface BalanceData {
 
 function BalanceCard(): JSX.Element {
   const [balance, setBalance] = useState<BalanceData>({ amount: 0, locked: 0 });
-  const [loading, setLoading] = useState(true);
+  const [_loading, setLoading] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -96,7 +96,7 @@ function BalanceCard(): JSX.Element {
       <div className="flex flex-col">
         <div className="text-lg font-semibold text-gray-300">Total Balance</div>
         <div className="text-2xl font-bold text-green-400 ml-3">
-          ₹ {balance.amount + balance.locked}
+          ₹ {(balance.amount + balance.locked)/100}
         </div>
       </div>
 
@@ -107,7 +107,7 @@ function BalanceCard(): JSX.Element {
             <AiFillLock className="text-red-400 text-xl" />
             <div>
               <div className="text-sm font-semibold text-gray-300">Locked</div>
-              <div className="text-lg font-bold text-red-400 ml-3">₹ {balance.locked}</div>
+              <div className="text-lg font-bold text-red-400 ml-3">₹ {(balance.locked)/100}</div>
             </div>
           </div>
         </Center>
@@ -116,7 +116,7 @@ function BalanceCard(): JSX.Element {
             <AiOutlineCheckCircle className="text-green-400 text-xl" />
             <div>
               <div className="text-sm font-semibold text-gray-300">Available</div>
-              <div className="text-lg font-bold text-green-400">₹ {balance.amount}</div>
+              <div className="text-lg font-bold text-green-400">₹ {(balance.amount)/100}</div>
             </div>
           </div>
         </Center>

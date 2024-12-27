@@ -1,6 +1,7 @@
-"use client"
+"use client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@repo/ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/CardTable";
 import { Input } from "@repo/ui/Input";
@@ -14,10 +15,11 @@ const SUPPORTED_BANKS = [
 ];
 
 function AddMoney(): JSX.Element {
-  const [_redirectUrl, setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);
   const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
   const [amount, setAmount] = useState(0);
+  const [loading, setLoading] = useState(false); // Loading state
   const { data: session, status } = useSession();
+  const router = useRouter();
 
   if (status === "loading") {
     return <p>Loading...</p>;
@@ -43,7 +45,6 @@ function AddMoney(): JSX.Element {
           <Select
             onSelect={(value) => {
               const selectedBank = SUPPORTED_BANKS.find(x => x.name === value);
-              setRedirectUrl(selectedBank?.redirectUrl || "");
               setProvider(selectedBank?.name || "");
             }}
             options={SUPPORTED_BANKS.map(x => ({
@@ -55,13 +56,27 @@ function AddMoney(): JSX.Element {
             <Button
               onClick={async () => {
                 if (amount > 0) {
-                  await createOnRampTransaction(provider, amount);
-                  // window.location.href = redirectUrl || "";
+                  setLoading(true); // Start loading
+                  try {
+                    const res = await createOnRampTransaction(provider, amount);
+                    router.push(`/bankpage?id=${session.user?.id}&token=${res.token}&amount=${amount}`);
+                  } catch (error) {
+                    console.error("Transaction failed:", error);
+                  } finally {
+                    setLoading(false); // Stop loading
+                  }
                 }
               }}
               className="w-1/2 py-2 px-4 text-black"
+              disabled={loading} // Disable button while loading
             >
-              Add Money
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="loader"></span> Processing...
+                </span>
+              ) : (
+                "Add Money"
+              )}
             </Button>
           </div>
         </div>

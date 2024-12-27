@@ -84,17 +84,7 @@ export default function SignIn(): JSX.Element {
 
           {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 rounded border-neutral-800 bg-neutral-900 text-white focus:ring-neutral-700"
-              />
-              <Label>Remember me</Label>
-            </div>
-
+          <div className="text-right">
             <div className="text-sm">
               <button
                 className="font-medium text-neutral-400 hover:text-white"
@@ -107,9 +97,9 @@ export default function SignIn(): JSX.Element {
             </div>
           </div>
 
-          <div>
+          <div className="text-center">
             <Button
-              className="w-full py-2 px-4"
+              className="w-1/2 py-2 px-4"
               onClick={async () => {
                 setLoading(true);
                 await handleSignIn();
