@@ -3,11 +3,13 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { AppBar } from "@repo/ui/AppBar";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
-export default function AppBarClient(): JSX.Element {
+export default function AppBarClient(): JSX.Element | null {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (status !== "loading") {
@@ -15,13 +17,17 @@ export default function AppBarClient(): JSX.Element {
     }
   }, [status]);
 
+  if (pathname === "/") {
+    // Do not render AppBar on the landing page
+    return null;
+  }
+
   if (isLoading) {
     // Display loader while session is being fetched
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-sm z-50">
-      <div className="w-12 h-12 border-4 border-green-400 border-t-transparent rounded-full animate-spin"></div>
-    </div>
-    
+        <div className="w-12 h-12 border-4 border-green-400 border-t-transparent rounded-full animate-spin"></div>
+      </div>
     );
   }
 
