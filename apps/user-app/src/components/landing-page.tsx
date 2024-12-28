@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { signIn,useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import {
   ArrowRight,
@@ -18,7 +18,6 @@ import { Card } from "@repo/ui/CardTable";
 export default function Home() {
   const [_isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
-  const { data: session, status } = useSession();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
