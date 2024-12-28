@@ -1,58 +1,116 @@
-# Turborepo Tailwind CSS starter
+# Finly: A Digital Finance Application  
 
-This is an official starter Turborepo.
+## Introduction  
 
-## Using this example
+In the ever-evolving world of financial technology, building a digital finance application offers a tremendous learning opportunity. I embarked on this project to enhance my skills in JavaScript while exploring the intricacies of managing financial workflows.  
 
-Run the following command:
+To achieve this, I chose **Next.js** as the framework for its powerful features and **Tailwind CSS** for styling. The goal was not only to build a functional application but also to understand the architecture and operations behind digital financial platforms.  
 
-```sh
-npx create-turbo@latest -e with-tailwind
-```
+---
 
-## What's inside?
+## Key Features of Finly  
 
-This Turborepo includes the following packages/apps:
+- **User-Friendly Interface**: Intuitive dashboard for users and merchants to manage transactions.  
+- **Money Transfer**: Send money to other users or merchants.  
+- **Withdrawals**: Users and merchants can withdraw funds to their linked bank accounts.  
+- **Bank Integration**: Seamless communication with banking systems via APIs and webhooks.  
+- **Real-Time Updates**: Ensure immediate notifications for successful transactions or issues.  
 
-### Apps and Packages
+---
 
-- `docs`: a [Next.js](https://nextjs.org/) app with [Tailwind CSS](https://tailwindcss.com/)
-- `web`: another [Next.js](https://nextjs.org/) app with [Tailwind CSS](https://tailwindcss.com/)
-- `ui`: a stub React component library with [Tailwind CSS](https://tailwindcss.com/) shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## Architecture  
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Main Components  
 
-### Building packages/ui
+#### Main Website (Finly)  
+The core platform where users interact with the app. It handles:  
+- User registration and authentication.  
+- Viewing transaction history.  
+- Sending money and withdrawing funds.  
 
-This example is set up to produce compiled styles for `ui` components into the `dist` directory. The component `.tsx` files are consumed by the Next.js apps directly using `transpilePackages` in `next.config.js`. This was chosen for several reasons:
+#### Bank APIs and Webhooks  
+Banks provide APIs and webhooks to facilitate transactions. Finly integrates with these services to handle:  
+- Deposits and withdrawals.  
+- Real-time balance updates via webhooks.  
 
-- Make sharing one `tailwind.config.js` to apps and packages as easy as possible.
-- Make package compilation simple by only depending on the Next.js Compiler and `tailwindcss`.
-- Ensure Tailwind classes do not overwrite each other. The `ui` package uses a `ui-` prefix for it's classes.
-- Maintain clear package export boundaries.
+#### Backend Services  
+- Handles encryption, validation, and communication with bank systems.  
+- Processes incoming webhooks for synchronization with banking services.  
 
-Another option is to consume `packages/ui` directly from source without building. If using this option, you will need to update the `tailwind.config.js` in your apps to be aware of your package locations, so it can find all usages of the `tailwindcss` class names for CSS compilation.
+#### Database  
+- Stores user details, transaction history, and balances.  
+- Modern databases like MongoDB or PostgreSQL ensure scalability and performance.  
 
-For example, in [tailwind.config.js](packages/tailwind-config/tailwind.config.js):
+---
 
-```js
-  content: [
-    // app content
-    `src/**/*.{js,ts,jsx,tsx}`,
-    // include packages if not transpiling
-    "../../packages/ui/*.{js,ts,jsx,tsx}",
-  ],
-```
+## Core Functionalities  
 
-If you choose this strategy, you can remove the `tailwindcss` and `autoprefixer` dependencies from the `ui` package.
+### 1. Send Money to Someone  
+Users can send money to others. The process involves:  
+- Verifying recipient details and sufficient balance.  
+- Logging transactions in the database.  
+- Webhook notifications for successful transactions.  
 
-### Utilities
+### 2. Withdraw Balance (Merchant or User)  
+Merchants or users can request withdrawals, which are:  
+- Verified by the backend.  
+- Processed through the bank’s API.  
+- Updated via webhooks upon success.  
 
-This Turborepo has some additional tools already setup for you:
+### 3. Webhooks for Incoming Transfers  
+When users deposit money, bank webhooks notify Finly:  
+- The backend validates the webhook and updates user balances.  
+- Real-time updates ensure seamless experience.  
 
-- [Tailwind CSS](https://tailwindcss.com/) for styles
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+---
+
+## Hooks in Finly  
+
+### Frontend Hooks  
+- **`useSession`**: Manages user authentication.  
+- **`useEffect`**: Listens for real-time updates.  
+- **`useState`**: Handles UI state.  
+
+### Backend Hooks  
+- Custom hooks streamline API requests, webhook validation, and transaction logging.  
+
+---
+
+## Instructions to Clone and Set Up  
+
+1. **Clone the Repository**  
+   ```bash
+   git clone https://github.com/yourusername/finly.git
+   cd finly
+   ```
+2. **Install Dependencies**
+  - Navigate to the root directory and install dependencies:
+
+    ```bash
+    Copy code
+    npm install
+    ```
+3. **Database Configuration**
+- Go to the packages/db/prisma folder.
+  Open the schema.
+- prisma file.
+- Replace the placeholder database URL with your
+- Prisma database connection URL:
+- prisma
+- Copy code
+    ```
+    datasource db {
+      provider = "postgresql" // or your preferred provider
+      url      = "postgresql://<username>:<password>@<host>:<port>/<database>"
+    }
+    ```
+- Run Prisma Migrations
+- Initialize the database schema:
+
+  ```bash
+  npx prisma migrate dev --name init
+  ```
+Start the Application
+Navigate to the root directory and run the application at localhost:3000
+
+
